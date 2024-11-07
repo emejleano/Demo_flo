@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit Order</title>
+    </head>
+    <body>
+        <h1>Edit New Order</h1>
+        <form th:action="@{/order/edit/{id}(id=${order.id})}" method="post">
+            <div>
+                <label for="orderDate">Order Date:</label>
+                <input type="date" id="orderDate" name="OrderDate" th:value="${order.orderDate}" />
+            </div>
+            <div>
+                <label for="customer">Customer:</label>
+                <select id ="customer" name="customer">
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"
+                            th.selected="${customer.id == order.customer.id}">
+                        Customer name
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="product">Product</label>
+                <select id="product" name="product">
+                    <option th:each="product: ${products}" th:value="${product.id}" th:text="${product.name}"
+                            th.selected="${product.id == order.product.id}">
+                        Product Name
+                    </option>
+                </select>
+            </div>
+            <button type ="submit">Save Changes</button>
+        </form>
+        <a th:href="@{/order/list}">Back to Order List</a>
+    </body>
+</html>

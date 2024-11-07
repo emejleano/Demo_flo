@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Menu</title>
+</head>
+<body>
+    <h1>Welcome to the Menu Page</h1>
+    <p>This is the main menu for users after login.</p>
+
+    <div>
+        <a href="/product/list">View Products</a>
+        <a href="/order/list">View Orders</a>
+        <a href="/customer/list">View Customers</a>
+    </div>
+    
+    <div>
+        <a href="/logout" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+    </div>
+</body>
+</html>

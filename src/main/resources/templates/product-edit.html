@@ -6,16 +6,16 @@
 <body>
     <h1>Edit Product</h1>
     <form th:action="@{/product/edit/{id}(id=${product.id})}" method="post">
-        <input type="hidden" name="_method" value="PUT" />
         <div>
             <label for="name">Product Name:</label>
-            <input type="text" id="name" name="name" th:value="${product.name}" />
+            <input type="text" id="name" name="name" th:value="${product.name}" required />
         </div>
         <div>
             <label for="price">Price:</label>
-            <input type="text" id="price" name="price" th:value="${product.price}" />
+            <input type="number" id="price" name="price" th:value="${product.price}" required />
         </div>
         <button type="submit">Save Changes</button>
     </form>
+    <a th:href="@{/product/list}">Back to Product List</a>
 </body>
 </html>

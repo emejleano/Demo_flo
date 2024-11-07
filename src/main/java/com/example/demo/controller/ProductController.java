@@ -5,8 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.Model.Product;
 import com.example.demo.Service.ProductService;
+import com.example.demo.Model.Product;
 
 @Controller
 @RequestMapping("/product")
@@ -22,32 +22,44 @@ public class ProductController {
         return "product-list";
     }
 
+    @GetMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String addProductForm(Model model) {
+        model.addAttribute("product", new Product());
+        return "product-add";
+    }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String saveProduct(@ModelAttribute("product") Product product) {
+        productService.saveProduct(product);
+        return "redirect:/product/list";
+    }
+
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editProductForm(@PathVariable Long id, Model model) {
-        try {
-            Product product = productService.getProductById(id);
+        Product product = productService.getProductById(id);
+        if (product != null) {
             model.addAttribute("product", product);
             return "product-edit";
-        } catch (RuntimeException e) {
-            model.addAttribute("error", "Product not found for id :: " + id);
-            return "product-list"; // Arahkan kembali ke daftar produk jika produk tidak ditemukan
+        } else {
+            return "redirect:/product/list";
         }
     }
 
-    @PostMapping("/edit/{id}") 
-    @PreAuthorize("hasRole('ADMIN')") 
-    public String editProduct(@PathVariable Long id, @ModelAttribute("product") Product product) { 
-        product.setId(id); 
-        productService.saveProduct(product); 
-        return "redirect:/product/list"; 
-    
+    @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String editProduct(@PathVariable Long id, @ModelAttribute("product") Product product) {
+        product.setId(id);
+        productService.saveProduct(product);
+        return "redirect:/product/list";
     }
-    // Menghapus produk berdasarkan ID, hanya dapat diakses oleh ADMIN 
-    @GetMapping("/delete/{id}") 
-    @PreAuthorize("hasRole('ADMIN')") 
-    public String deleteProduct(@PathVariable Long id) { 
-        productService.deleteProduct(id); 
-        return "redirect:/product/list"; 
+
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/product/list";
     }
 }

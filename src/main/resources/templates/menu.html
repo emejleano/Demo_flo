@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Menu</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Welcome to the Menu Page</h1>
-    <p>This is the main menu for users after login.</p>
+    <div class="container mt-5 text-center">
+        <h1>Selamat datang di Modul 8</h1>
+        <p>Dikerjakan oleh Florentina</p>
 
-    <div>
-        <a href="/product/list">View Products</a>
-        <a href="/order/list">View Orders</a>
-        <a href="/customer/list">View Customers</a>
-    </div>
-    
-    <div>
-        <a href="/logout" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+        <div class="d-flex justify-content-center my-4">
+            <a href="/product/list" class="btn btn-primary mx-2">View Products</a>
+            <a href="/order/list" class="btn btn-primary mx-2">View Orders</a>
+            <a href="/customer/list" class="btn btn-primary mx-2">View Customers</a>
+        </div>
+        
+        <div>
+            <a href="/logout" class="btn btn-warning" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+        </div>
     </div>
 </body>
 </html>

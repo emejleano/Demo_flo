@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.Controller;
 
 import com.example.demo.Model.Customer;
 import com.example.demo.Service.CustomerService;
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
@@ -15,13 +17,15 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    // Menampilkan daftar pelanggan
     @GetMapping("/list")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public String getAllCustomers(Model model) {
-        model.addAttribute("customers", customerService.getAllCustomers());
+    public String listCustomers(Model model) {
+        List<Customer> customers = customerService.getAllCustomers();
+        model.addAttribute("customers", customers);
         return "customer-list";
     }
 
+    // Form untuk menambah pelanggan baru
     @GetMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String addCustomerForm(Model model) {
@@ -29,6 +33,7 @@ public class CustomerController {
         return "customer-add";
     }
 
+    // Proses penambahan pelanggan
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveCustomer(@ModelAttribute("customer") Customer customer) {
@@ -36,6 +41,7 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
+    // Form untuk mengedit pelanggan berdasarkan ID
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editCustomerForm(@PathVariable Long id, Model model) {
@@ -48,14 +54,16 @@ public class CustomerController {
         }
     }
 
+    // Proses update pelanggan
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editCustomer(@PathVariable Long id, @ModelAttribute("customer") Customer customer) {
-        customer.setId(id);
+        customer.setId(id);  // Set ID untuk memastikan update
         customerService.saveCustomer(customer);
         return "redirect:/customer/list";
     }
 
+    // Menghapus pelanggan berdasarkan ID
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteCustomer(@PathVariable Long id) {

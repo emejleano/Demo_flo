@@ -1,38 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Product List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Product List</h1>
-    <div> 
-        <a href="/logout" onclick="return confirm('Are you sure you want to long out?')">Logout</a>
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Product List</h2>
+            <a href="/logout" class="btn btn-danger" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}">ID</td>
+                    <td th:text="${product.name}">Name</td>
+                    <td th:text="${product.price}">Price</td>
+                    <td>
+                        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                           th:href="@{/product/edit/{id}(id=${product.id})}" 
+                           class="btn btn-primary btn-sm">Edit</a>
+                        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                           th:href="@{/product/delete/{id}(id=${product.id})}" 
+                           class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between">
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" 
+               th:href="@{/product/add}" 
+               class="btn btn-success">Add New Product</a>
+            <button onclick="window.location.href = '/menu'" class="btn btn-secondary">Back to Menu</button>
+        </div>
     </div>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.id}">ID</td>
-            <td th:text="${product.name}">Name</td>
-            <td th:text="${product.price}">Price</td>
-            <td>
-                <a 
-                    th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-                    th:href="@{/product/edit/{id}(id=${product.id})}">Edit</a> |
-                <a 
-                    th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-                    th:href="@{/product/delete/{id}(id=${product.id})}" 
-                    onclick="return confirm('Apakah kamu yakin untuk menghapus produk ini?')">Delete</a>
-            </td>
-        </tr>
-    </table>
-    <a 
-        th:if="${#authorization.expression('hasRole(''ADMIN'')')}" 
-        th:href="@{/product/add}">Add New Product</a>
-    <button onclick="window.location.href = '/menu'">Back to Menu</button>
 </body>
 </html>

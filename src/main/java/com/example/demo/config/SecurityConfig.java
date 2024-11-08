@@ -22,9 +22,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/login", "/h2-console/**").permitAll()
                         .requestMatchers("/menu", "/product/list", "/order/list", "/customer/list").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/product/add", "/product/edit/", "/product/delete/",
-                                         "/order/add/", "/order/edit/", "/order/delete/",
-                                         "/customer/add", "/customer/edit/", "/customer/delete/").hasRole("ADMIN")
+                        .requestMatchers("/product/add", "/product/edit/**", "/product/delete/**",
+                                         "/order/add", "/order/edit/**", "/order/delete/**",
+                                         "/customer/add", "/customer/edit/**", "/customer/delete/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

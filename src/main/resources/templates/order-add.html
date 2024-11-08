@@ -1,33 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th=""http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>Add Order</title>
-    </head>
-    <body>
-        <h1>Add New Order</h1>
-        <form th:action="@{/order/add}" method="post">
-            <div>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Order</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Add New Order</h1>
+        <form th:action="@{/order/add}" th:object="${order}" method="post">
+            <div class="form-group">
                 <label for="orderDate">Order Date:</label>
-                <input type="date" id="orderDate" name="OrderDate" />
+                <input type="date" id="orderDate" th:field="*{orderDate}" class="form-control" required />
             </div>
-            <div>
+            <div class="form-group">
                 <label for="customer">Customer:</label>
-                <select id="customer" name="customer">
+                <select id="customer" th:field="*{customer.id}" class="form-control">
                     <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}">
                         Customer name
                     </option>
                 </select>
             </div>
-            <div>
-                <label for="product" >Product</label>
-                <select id="product" name="product">
-                    <option th:each="product: ${product}" th:value="${product.id}" th:text="${product.name}">
+            <div class="form-group">
+                <label for="product">Product:</label>
+                <select id="product" th:field="*{product.id}" class="form-control">
+                    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}">
                         Product Name
                     </option>
                 </select>
             </div>
-            <button type ="submit">Add Order</button>
-            <a th:href="@{/order/list}">Back to Order List</a>
-    </body>
+            <button type="submit" class="btn btn-primary">Add Order</button>
+            <a th:href="@{/order/list}" class="btn btn-secondary ml-2">Back to Order List</a>
+        </form>
+    </div>
+</body>
 </html>

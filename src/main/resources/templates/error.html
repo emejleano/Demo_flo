@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="card shadow-lg">
+            <div class="card-body text-center">
+                <h1 class="display-4 text-danger">Yahhh Erorr :(</h1>
+                <p class="lead text-muted" th:text="${errorMessage}"></p>
+                <a href="/menu" class="btn btn-primary mt-4">Back to Menu</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

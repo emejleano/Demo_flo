@@ -1,4 +1,4 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
 import com.example.demo.Model.Order;
 import com.example.demo.Model.Customer;
@@ -27,15 +27,16 @@ public class OrderController {
     @Autowired
     private ProductService productService;
 
-    // Menampilkan daftar order
+    // Menampilkan daftar order (untuk USER dan ADMIN)
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public String listOrders(Model model) {
         List<Order> orders = orderService.getAllOrder();
         model.addAttribute("orders", orders);
         return "order-list";
     }
 
-    // Form untuk menambah order baru
+    // Form untuk menambah order baru (untuk ADMIN)
     @GetMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String addOrderForm(Model model) {
@@ -45,7 +46,7 @@ public class OrderController {
         return "order-add";
     }
 
-    // Proses penambahan order
+    // Proses penambahan order (untuk ADMIN)
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveOrder(@ModelAttribute("order") Order order) {
@@ -53,7 +54,7 @@ public class OrderController {
         return "redirect:/order/list";
     }
 
-    // Form untuk mengedit order berdasarkan ID
+    // Form untuk mengedit order berdasarkan ID (untuk ADMIN)
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editOrderForm(@PathVariable Long id, Model model) {
@@ -68,16 +69,16 @@ public class OrderController {
         }
     }
 
-    // Proses update order
+    // Proses update order (untuk ADMIN)
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editOrder(@PathVariable Long id, @ModelAttribute("order") Order order) {
-        order.setId(id);  // Set ID untuk memastikan update
+        order.setId(id);
         orderService.saveOrder(order);
         return "redirect:/order/list";
     }
 
-    // Menghapus order berdasarkan ID
+    // Menghapus order berdasarkan ID (untuk ADMIN)
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteOrder(@PathVariable Long id) {

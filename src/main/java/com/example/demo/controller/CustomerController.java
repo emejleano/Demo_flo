@@ -1,4 +1,4 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
 import com.example.demo.Model.Customer;
 import com.example.demo.Service.CustomerService;
@@ -17,15 +17,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    // Menampilkan daftar pelanggan
+    // Menampilkan daftar pelanggan (untuk USER dan ADMIN)
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public String listCustomers(Model model) {
         List<Customer> customers = customerService.getAllCustomers();
         model.addAttribute("customers", customers);
         return "customer-list";
     }
 
-    // Form untuk menambah pelanggan baru
+    // Form untuk menambah pelanggan baru (untuk ADMIN)
     @GetMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String addCustomerForm(Model model) {
@@ -33,7 +34,7 @@ public class CustomerController {
         return "customer-add";
     }
 
-    // Proses penambahan pelanggan
+    // Proses penambahan pelanggan (untuk ADMIN)
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveCustomer(@ModelAttribute("customer") Customer customer) {
@@ -41,7 +42,7 @@ public class CustomerController {
         return "redirect:/customer/list";
     }
 
-    // Form untuk mengedit pelanggan berdasarkan ID
+    // Form untuk mengedit pelanggan berdasarkan ID (untuk ADMIN)
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editCustomerForm(@PathVariable Long id, Model model) {
@@ -54,16 +55,16 @@ public class CustomerController {
         }
     }
 
-    // Proses update pelanggan
+    // Proses update pelanggan (untuk ADMIN)
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String editCustomer(@PathVariable Long id, @ModelAttribute("customer") Customer customer) {
-        customer.setId(id);  // Set ID untuk memastikan update
+        customer.setId(id);
         customerService.saveCustomer(customer);
         return "redirect:/customer/list";
     }
 
-    // Menghapus pelanggan berdasarkan ID
+    // Menghapus pelanggan berdasarkan ID (untuk ADMIN)
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteCustomer(@PathVariable Long id) {
